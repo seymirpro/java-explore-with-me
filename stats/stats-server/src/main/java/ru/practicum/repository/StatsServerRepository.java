@@ -2,7 +2,6 @@ package ru.practicum.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import ru.practicum.ewm.dto.stats.ViewStatsDto;
 import ru.practicum.model.EndpointHit;
 
@@ -15,7 +14,6 @@ public interface StatsServerRepository extends JpaRepository<EndpointHit, Long> 
             "where s.timestamp between :start and :end " +
             "group by s.app, s.uri " +
             "order by count(distinct(s.ip)) desc")
-
     List<ViewStatsDto> getStatsByUniqueIp(LocalDateTime start, LocalDateTime end);
 
     @Query("select new ru.practicum.ewm.dto.stats.ViewStatsDto(s.app, s.uri, count(s.ip))" +
