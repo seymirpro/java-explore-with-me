@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 public class StatsServerService {
-   private StatsServerRepository statsServerRepository;
+    private StatsServerRepository statsServerRepository;
 
     @Autowired
     public StatsServerService(StatsServerRepository statsServerRepository) {
@@ -28,13 +28,20 @@ public class StatsServerService {
 
     public List<ViewStatsDto> getStats(LocalDateTime start,
                                        LocalDateTime end,
-                                       String[] uris,
+                                       List<String> uris,
                                        boolean unique) {
-        if(unique) {
-            return statsServerRepository.getStatsUnique(start, end, uris);
-        }
-        else {
-            return statsServerRepository.getStatsNonUnique(start, end, uris);
+        if (uris == null) {
+            if (unique) {
+                return statsServerRepository.getStatsByUniqueIp(start, end);
+            } else {
+                return statsServerRepository.getAllStats(start, end);
+            }
+        } else {
+            if (unique) {
+                return statsServerRepository.getStatsByUrisByUniqueIp(start, end, uris);
+            } else {
+                return statsServerRepository.getAllStatsByUris(start, end, uris);
+            }
         }
     }
 }
