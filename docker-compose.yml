@@ -4,7 +4,7 @@ services:
       context: ./stats/stats-server/
       dockerfile: Dockerfile
     environment:
-      - STATS_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stat_svc
+      - STATS_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats
     ports:
       - "9090:9090"
     depends_on:
@@ -15,9 +15,9 @@ services:
     image: postgres:14-alpine
     container_name: stats_server_db
     environment:
-      - POSTGRES_USER=stat_svc
-      - POSTGRES_PASSWORD=stat_svc
-      - POSTGRES_DB=stat_svc
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=stats
     volumes:
       - ./stats_db_data:/var/lib/postgresql/data
     ports:
