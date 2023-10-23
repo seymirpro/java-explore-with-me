@@ -17,8 +17,8 @@ import java.util.List;
 @PropertySource(value = {"classpath:application.properties"})
 public class StatsClient {
 
-    @Value("${stats.server.url}")
-    private String baseUrl;
+    //@Value("${stats.server.url}")
+    private String baseUrl = "http://localhost:9090";
 
     private final WebClient client;
 
