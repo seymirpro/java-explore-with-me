@@ -57,6 +57,7 @@ public class EventService {
     private final StatsClient statsClient;
     private final LocationRepository locationRepository;
 
+
     public List<EventFullDto> getAllEventsAdmin(List<Long> users,
                                                 List<EventState> states,
                                                 List<Long> categories,
@@ -102,6 +103,7 @@ public class EventService {
     }
 
     @Transactional(readOnly = true)
+
     public List<EventShortDto> getAllEventsByUserIdPrivate(Long userId, int from, int size) {
         log.info("Get all events of user with id= {} in private", userId);
         List<Event> events = eventRepository.findAllWithInitiatorByInitiatorId(userId, new Pagination(from, size,
@@ -114,12 +116,14 @@ public class EventService {
     }
 
     @Transactional(readOnly = true)
+
     public EventFullDto getEventByIdPrivate(Long userId, Long eventId) {
         Event event = getEventByIdAndInitiatorId(eventId, userId);
         confirmedRequestsForOneEvent(event);
         log.info("Get event with id={} of user with id= {} in private", eventId, userId);
         return mapToEventFullDto(event);
     }
+
 
     public EventFullDto updateEventByIdPrivate(Long userId, Long eventId, EventUpdatedDto eventUpdatedDto) {
         Event event = getEventByIdAndInitiatorId(eventId, userId);
@@ -202,7 +206,7 @@ public class EventService {
         }
         statsClient.saveStats(app, request.getRequestURI(), request.getRemoteAddr());
 
-        log.info("Get event with  id = {}", id);
+        log.info("Get event with  id = {}}", id);
         return fullDto;
     }
 
