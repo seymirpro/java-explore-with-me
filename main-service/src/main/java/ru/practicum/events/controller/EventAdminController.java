@@ -5,10 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.utils.EventState;
 import ru.practicum.events.dto.EventFullDto;
 import ru.practicum.events.dto.EventUpdatedDto;
 import ru.practicum.events.service.EventService;
+import ru.practicum.utils.EventState;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
