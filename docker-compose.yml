@@ -1,49 +1,47 @@
+version: '3.1'
 services:
   stats-server:
-    build:
-      context: ./stats/stats-server/
-      dockerfile: Dockerfile
-    environment:
-      - STATS_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats
+    build: stats/stats-server
+    image: stats-server
+    container_name: stats-server
     ports:
       - "9090:9090"
     depends_on:
       - stats-db
-    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats-db
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=userpassword
 
   stats-db:
     image: postgres:14-alpine
-    container_name: stats_server_db
-    environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=stats
-    volumes:
-      - ./stats_db_data:/var/lib/postgresql/data
+    container_name: stats-db
     ports:
       - "6541:5432"
+    environment:
+      - POSTGRES_DB=stats-db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=userpassword
 
-  ewm-service:
-    build:
-      context: ./main-service/
-      dockerfile: Dockerfile
+  main-service:
+    build: main-service
+    image: main-service
+    container_name: main-service
     ports:
       - "8080:8080"
     depends_on:
       - ewm-db
       - stats-server
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/mainservicedb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/ewm-db
       - STATS_SERVER_URL=http://stats-server:9090
 
   ewm-db:
     image: postgres:14-alpine
-    container_name: main_service_ewm-db
-    environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=mainservicedb
-    volumes:
-      - ./main_service_db_data:/var/lib/postgresql/data
+    container_name: ewm-db
     ports:
       - "6542:5432"
+    environment:
+      - POSTGRES_DB=ewm-db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=userpassword
