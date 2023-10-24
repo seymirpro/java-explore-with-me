@@ -6,16 +6,15 @@ import lombok.experimental.UtilityClass;
 import ru.practicum.category.model.Category;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@UtilityClass
 public class CategoryMapper {
 
-    public CategoryDto toCategoryDto(NewCategoryDto newCategoryDto) {
+    public static CategoryDto toCategoryDto(NewCategoryDto newCategoryDto) {
         return CategoryDto.builder()
                 .name(newCategoryDto.getName())
                 .build();
     }
 
-    public CategoryDto toCategoryDto(Category category) {
+    public static CategoryDto toCategoryDto(Category category) {
         if (category == null) {
             return null;
         }
@@ -25,13 +24,13 @@ public class CategoryMapper {
                 .build();
     }
 
-    public Category toCategory(NewCategoryDto newCategoryDto) {
+    public static Category toCategory(NewCategoryDto newCategoryDto) {
         Category category = new Category();
         category.setName(newCategoryDto.getName());
         return category;
     }
 
-    public Category toCategory(CategoryDto categoryDto) {
+    public static Category toCategory(CategoryDto categoryDto) {
         Category category = new Category();
         category.setName(categoryDto.getName());
         return category;

@@ -61,7 +61,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public CompilationDto updateCompilationByIdAdmin(Long compId, CompilationUpdatedDto dto) {
         Compilation toUpdate = compilationRepository.findById(compId).orElseThrow(() ->
-                new NotFoundException(String.format("Compilation %s not found", compId)));
+                new NotFoundException(String.format("Compilation %d not found", compId)));
 
         if (dto.getTitle() != null && !dto.getTitle().isBlank()) {
             toUpdate.setTitle(dto.getTitle());

@@ -40,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Category with id=%s hasn't found", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Category with id=%d hasn't found", id)));
         log.info("Get category with id = {}", id);
         return toCategoryDto(category);
     }
@@ -48,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto updateCategoryById(Long id, CategoryDto categoryDto) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Category with id=%s hasn't found", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Category with id=%d hasn't found", id)));
         category.setName(categoryDto.getName());
         log.info("Get category with id = {}", category.getId());
         return toCategoryDto(categoryRepository.save(category));
@@ -65,9 +65,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategoryById(Long id) {
-        boolean isExist = categoryRepository.existsById(id);
-        if (!isExist) {
-            throw new NotFoundException(String.format("Category with id=%s hasn't found", id));
+        if (!categoryRepository.existsById(id)) {
+            throw new NotFoundException(String.format("Category with id=%d hasn't found", id));
         } else {
             try {
                 categoryRepository.deleteById(id);
