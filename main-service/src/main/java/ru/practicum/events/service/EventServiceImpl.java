@@ -14,14 +14,14 @@ import ru.practicum.locations.model.Location;
 import ru.practicum.locations.repository.LocationRepository;
 import ru.practicum.requests.model.ParticipationRequest;
 import ru.practicum.requests.repository.RequestRepository;
-import ru.practicum.util.enam.EventRequestStatus;
-import ru.practicum.util.enam.EventState;
-import ru.practicum.util.enam.EventsSort;
+import ru.practicum.util.enums.EventRequestStatus;
+import ru.practicum.util.enums.EventState;
+import ru.practicum.util.enums.EventsSort;
 import ru.practicum.util.Pagination;
 import ru.practicum.StatsClient;
 import ru.practicum.category.model.Category;
 import ru.practicum.category.repository.CategoryRepository;
-import ru.practicum.util.enam.EventStateAction;
+import ru.practicum.util.enums.EventStateAction;
 import ru.practicum.events.dto.*;
 import ru.practicum.events.model.Event;
 import ru.practicum.events.repository.EventRepository;
@@ -37,10 +37,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static ru.practicum.locations.dto.LocationMapper.mapToLocation;
-import static ru.practicum.util.enam.EventsSort.EVENT_DATE;
-import static ru.practicum.util.enam.EventsSort.VIEWS;
+import static ru.practicum.util.enums.EventsSort.EVENT_DATE;
+import static ru.practicum.util.enums.EventsSort.VIEWS;
 import static ru.practicum.util.Constants.*;
-import static ru.practicum.util.enam.EventState.*;
+import static ru.practicum.util.enums.EventState.*;
 import static ru.practicum.events.dto.EventMapper.mapToEventFullDto;
 import static ru.practicum.events.dto.EventMapper.mapToNewEvent;
 
@@ -75,7 +75,6 @@ public class EventServiceImpl implements EventService {
                 pageable);
         confirmedRequestForListEvent(events);
 
-        log.info("Get all events in admin {}", events);
         return events.stream()
                 .map(EventMapper::mapToEventFullDto)
                 .collect(Collectors.toList());
@@ -87,7 +86,6 @@ public class EventServiceImpl implements EventService {
         updateEventAdmin(event, eventUpdatedDto);
         event = eventRepository.save(event);
         locationRepository.save(event.getLocation());
-        log.info("Update event with id= {} in admin ", eventId);
         return mapToEventFullDto(event);
     }
 
@@ -102,7 +100,6 @@ public class EventServiceImpl implements EventService {
                 .save(mapToLocation(newEventDto.getLocation()));
         Event event = eventRepository.save(mapToNewEvent(newEventDto, savedLocation, user, category));
         confirmedRequestsForOneEvent(event);
-        log.info("User id= {} create event in admin", userId);
         return mapToEventFullDto(event);
     }
 
@@ -124,7 +121,6 @@ public class EventServiceImpl implements EventService {
     public EventFullDto getEventByIdPrivate(Long userId, Long eventId) {
         Event event = getEventByIdAndInitiatorId(eventId, userId);
         confirmedRequestsForOneEvent(event);
-        log.info("Get event with id={} of user with id= {} in private", eventId, userId);
         return mapToEventFullDto(event);
     }
 
@@ -137,7 +133,6 @@ public class EventServiceImpl implements EventService {
         updateEvent(event, eventUpdatedDto);
         Event eventSaved = eventRepository.save(event);
         locationRepository.save(eventSaved.getLocation());
-        log.info("Update event with id={} of user with id= {} in private", eventId, userId);
         return mapToEventFullDto(eventSaved);
     }
 
@@ -189,7 +184,6 @@ public class EventServiceImpl implements EventService {
                     .collect(Collectors.toList());
         }
 
-        log.info("Get all event with text {}, category {}", text, categories);
         return result;
     }
 
@@ -210,7 +204,6 @@ public class EventServiceImpl implements EventService {
         }
         statsClient.saveStats(app, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now());
 
-        log.info("Get event with  id = {}}", id);
         return fullDto;
     }
 

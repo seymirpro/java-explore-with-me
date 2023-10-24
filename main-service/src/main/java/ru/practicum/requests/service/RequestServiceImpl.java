@@ -1,37 +1,34 @@
 package ru.practicum.requests.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.requests.dto.EventRequestStatusUpdateRequest;
-import ru.practicum.requests.dto.EventRequestStatusUpdateResult;
 import ru.practicum.events.model.Event;
 import ru.practicum.events.repository.EventRepository;
-import ru.practicum.handler.ValidateException;
 import ru.practicum.handler.NotFoundException;
+import ru.practicum.handler.ValidateException;
+import ru.practicum.requests.dto.EventRequestStatusUpdateRequest;
+import ru.practicum.requests.dto.EventRequestStatusUpdateResult;
 import ru.practicum.requests.dto.ParticipationRequestDto;
 import ru.practicum.requests.dto.ParticipationRequestMapper;
 import ru.practicum.requests.model.ParticipationRequest;
 import ru.practicum.requests.repository.RequestRepository;
 import ru.practicum.users.model.User;
 import ru.practicum.users.repository.UserRepository;
-import ru.practicum.util.enam.EventRequestStatus;
+import ru.practicum.util.enums.EventRequestStatus;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
-import static ru.practicum.util.enam.EventState.PUBLISHED;
-import static ru.practicum.util.enam.EventRequestStatus.*;
 import static ru.practicum.requests.dto.ParticipationRequestMapper.mapToNewParticipationRequest;
 import static ru.practicum.requests.dto.ParticipationRequestMapper.mapToParticipationRequestDto;
+import static ru.practicum.util.enums.EventRequestStatus.*;
+import static ru.practicum.util.enums.EventState.PUBLISHED;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 @Transactional
 public class RequestServiceImpl implements RequestService {
 
@@ -84,9 +81,9 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public ParticipationRequestDto createParticipationRequest(Long userId, Long eventId) {
         User user = userRepository.findById(userId).orElseThrow(()
-                -> new NotFoundException("User with id=" + userId + " hasn't found."));
+                -> new NotFoundException(String.format("User with id=%d hasn't found.", userId)));
         Event event = eventRepository.findById(eventId).orElseThrow(()
-                -> new NotFoundException("Event with id=" + eventId + "  hasn't found found."));
+                -> new NotFoundException(String.format("Event with id=%d  hasn't found found.", eventId)));
         event.setConfirmedRequests(requestRepository
                 .countRequestByEventIdAndStatus(event.getId(), EventRequestStatus.CONFIRMED));
         validateParticipantLimit(event);
@@ -105,7 +102,6 @@ public class RequestServiceImpl implements RequestService {
 
         ParticipationRequest participationRequest = requestRepository.save(mapToNewParticipationRequest(event, user));
 
-        log.info("Create participation request {} ", participationRequest);
         return mapToParticipationRequestDto(participationRequest);
     }
 
@@ -128,7 +124,6 @@ public class RequestServiceImpl implements RequestService {
                     .map(ParticipationRequestMapper::mapToParticipationRequestDto)
                     .collect(Collectors.toList());
         }
-        log.info("Get participation request for event with id ={}", eventId);
         return Collections.emptyList();
     }
 
@@ -137,7 +132,7 @@ public class RequestServiceImpl implements RequestService {
     public EventRequestStatusUpdateResult updateEventRequestStatusPrivate(Long userId, Long eventId,
                                                                           EventRequestStatusUpdateRequest statusUpdateRequest) {
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
-                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " hasn't found."));
+                .orElseThrow(() -> new NotFoundException(String.format("Event with id=%d hasn't found.", eventId)));
         event.setConfirmedRequests(requestRepository
                 .countRequestByEventIdAndStatus(event.getId(), EventRequestStatus.CONFIRMED));
 
@@ -149,7 +144,6 @@ public class RequestServiceImpl implements RequestService {
 
         validateRequestStatus(requests);
 
-        log.info("Update event request status id= {}", eventId);
         switch (statusUpdateRequest.getStatus()) {
             case CONFIRMED:
                 return createConfirmedStatus(requests, event);
@@ -164,8 +158,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<ParticipationRequestDto> getParticipationRequestByUserId(Long userId) {
         userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with id=" + userId + " hasn't found"));
-        log.info("Get participation request for user with id= {}", userId);
+                .orElseThrow(() -> new NotFoundException(String.format("User with id=%d hasn't found", userId)));
         return requestRepository.findAllByRequesterId(userId).stream()
                 .map(ParticipationRequestMapper::mapToParticipationRequestDto)
                 .collect(Collectors.toList());
@@ -174,9 +167,8 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public ParticipationRequestDto updateStatusParticipationRequest(Long userId, Long requestId) {
         ParticipationRequest request = requestRepository.findByIdAndRequesterId(requestId, userId)
-                .orElseThrow(() -> new NotFoundException("Request with id=" + requestId + " hasn't found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Request with id=%d hasn't found", requestId)));
         request.setStatus(CANCELED);
-        log.info("Update status participation request id= {}", requestId);
         return mapToParticipationRequestDto(requestRepository.save(request));
     }
 

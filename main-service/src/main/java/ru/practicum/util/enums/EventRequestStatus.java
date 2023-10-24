@@ -1,4 +1,4 @@
-package ru.practicum.util.enam;
+package ru.practicum.util.enums;
 
 public enum EventRequestStatus {
 

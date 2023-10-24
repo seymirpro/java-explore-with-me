@@ -24,7 +24,7 @@ public class ErrorHandler {
     public Map<String, String> handleException(Throwable e) {
         log.error("Error: {}, {}", HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         return Map.of(
-                "status", "NTERNAL SERVER ERROR",
+                "status", "INTERNAL SERVER ERROR",
                 "message", e.getMessage()
 
         );

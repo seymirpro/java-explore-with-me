@@ -1,7 +1,6 @@
 package ru.practicum.compilations.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +25,6 @@ import static ru.practicum.compilations.dto.CompilationMapper.mapToNewCompilatio
 import static ru.practicum.compilations.dto.CompilationMapper.mapToCompilationDto;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class CompilationServiceImpl implements CompilationService {
@@ -82,14 +80,12 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public void deleteCompilationByIdAdmin(Long compId) {
         getCompilation(compId);
-        log.info("Delete compilation with id= {} ", compId);
         compilationRepository.deleteById(compId);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<CompilationDto> getAllCompilationsPublic(Boolean pinned, Integer from, Integer size) {
-        log.info("Get all compilations");
         if (pinned == null) {
             return compilationRepository.findAll(new Pagination(from, size, Sort.unsorted())).getContent().stream()
                     .map(CompilationMapper::mapToCompilationDto)
@@ -106,7 +102,6 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public CompilationDto getCompilationByIdPublic(Long id) {
         Compilation compilation = getCompilation(id);
-        log.info("Get compilation with id= {} ", id);
         return mapToCompilationDto(compilation);
     }
 

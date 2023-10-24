@@ -1,7 +1,7 @@
 package ru.practicum.events.service;
 
-import ru.practicum.util.enam.EventState;
-import ru.practicum.util.enam.EventsSort;
+import ru.practicum.util.enums.EventState;
+import ru.practicum.util.enums.EventsSort;
 import ru.practicum.events.dto.EventFullDto;
 import ru.practicum.events.dto.EventShortDto;
 import ru.practicum.events.dto.EventUpdatedDto;

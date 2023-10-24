@@ -1,7 +1,6 @@
 package ru.practicum.users.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +21,6 @@ import static ru.practicum.users.dto.UserMapper.toUserDto;
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -30,14 +28,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(NewUserRequest userDto) {
         User user = userRepository.save(toUser(userDto));
-        log.info("Create user {}", user);
         return toUserDto(user);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<UserDto> getUsers(List<Long> ids, Integer from, Integer size) {
-        log.info("Get user with ids: {}", ids);
         if (ids.isEmpty()) {
             return userRepository.findAll(new Pagination(from, size, Sort.unsorted())).stream()
                     .map(UserMapper::toUserDto)
@@ -54,7 +50,6 @@ public class UserServiceImpl implements UserService {
         if (!userRepository.existsById(userId)) {
             throw new NotFoundException("User with id=" + userId + " hasn't found");
         }
-        log.info("Delete user with id= {}", userId);
         userRepository.deleteById(userId);
     }
 }

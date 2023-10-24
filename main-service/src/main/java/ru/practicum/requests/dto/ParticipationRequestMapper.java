@@ -5,7 +5,7 @@ import ru.practicum.events.model.Event;
 import ru.practicum.requests.model.ParticipationRequest;
 import ru.practicum.users.model.User;
 
-import static ru.practicum.util.enam.EventRequestStatus.CONFIRMED;
+import static ru.practicum.util.enums.EventRequestStatus.CONFIRMED;
 
 
 @UtilityClass

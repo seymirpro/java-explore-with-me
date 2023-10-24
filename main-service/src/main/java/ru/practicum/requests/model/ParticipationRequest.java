@@ -6,15 +6,15 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
-import ru.practicum.util.enam.EventRequestStatus;
 import ru.practicum.events.model.Event;
 import ru.practicum.users.model.User;
+import ru.practicum.util.enums.EventRequestStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 import static ru.practicum.util.Constants.PATTERN_CREATED_DATE;
-import static ru.practicum.util.enam.EventRequestStatus.PENDING;
+import static ru.practicum.util.enums.EventRequestStatus.PENDING;
 
 @Entity
 @Table(name = "requests")
