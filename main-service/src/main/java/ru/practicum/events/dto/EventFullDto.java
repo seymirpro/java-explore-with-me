@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.locations.dto.LocationDto;
+import ru.practicum.util.enam.EventState;
 import ru.practicum.users.dto.UserShortDto;
-import ru.practicum.utils.EventState;
 
 import java.time.LocalDateTime;
 
-import static ru.practicum.utils.Constants.DATE_DEFAULT;
+import static ru.practicum.util.Constants.DATE_DEFAULT;
 
 @Getter
 @Setter

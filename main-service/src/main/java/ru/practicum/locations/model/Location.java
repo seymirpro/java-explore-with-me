@@ -1,5 +1,6 @@
 package ru.practicum.locations.model;
 
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,3 +24,4 @@ public class Location {
     @Column(name = "lon")
     private Float lon;
 }
+

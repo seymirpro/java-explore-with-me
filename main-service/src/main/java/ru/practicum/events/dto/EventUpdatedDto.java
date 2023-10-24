@@ -1,16 +1,16 @@
+
 package ru.practicum.events.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.locations.dto.LocationDto;
-import ru.practicum.utils.EventStateAction;
-
+import ru.practicum.util.enam.EventStateAction;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-import static ru.practicum.utils.Constants.DATE_DEFAULT;
+import static ru.practicum.util.Constants.DATE_DEFAULT;
 
 
 @Getter

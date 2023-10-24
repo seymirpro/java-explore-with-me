@@ -7,14 +7,14 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.practicum.category.model.Category;
 import ru.practicum.locations.model.Location;
+import ru.practicum.util.enam.EventState;
 import ru.practicum.users.model.User;
-import ru.practicum.utils.EventState;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static ru.practicum.utils.Constants.DATE_DEFAULT;
-import static ru.practicum.utils.EventState.PENDING;
+import static ru.practicum.util.Constants.DATE_DEFAULT;
+import static ru.practicum.util.enam.EventState.PENDING;
 
 @Entity
 @Table(name = "events")
