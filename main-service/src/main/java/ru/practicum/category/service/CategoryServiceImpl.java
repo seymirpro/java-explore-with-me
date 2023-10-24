@@ -10,10 +10,10 @@ import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.dto.CategoryMapper;
 import ru.practicum.category.dto.NewCategoryDto;
 import ru.practicum.category.model.Category;
-import ru.practicum.handler.NotAvailableException;
-import ru.practicum.util.Pagination;
 import ru.practicum.category.repository.CategoryRepository;
+import ru.practicum.handler.NotAvailableException;
 import ru.practicum.handler.NotFoundException;
+import ru.practicum.util.Pagination;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Category with id=" + id + " hasn't found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Category with id=%s hasn't found", id)));
         log.info("Get category with id = {}", id);
         return toCategoryDto(category);
     }
@@ -48,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto updateCategoryById(Long id, CategoryDto categoryDto) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Category with id=" + id + " hasn't found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Category with id=%s hasn't found", id)));
         category.setName(categoryDto.getName());
         log.info("Get category with id = {}", category.getId());
         return toCategoryDto(categoryRepository.save(category));
@@ -67,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategoryById(Long id) {
         boolean isExist = categoryRepository.existsById(id);
         if (!isExist) {
-            throw new NotFoundException("Category with id=" + id + " hasn't found");
+            throw new NotFoundException(String.format("Category with id=%s hasn't found", id));
         } else {
             try {
                 categoryRepository.deleteById(id);
