@@ -2,7 +2,6 @@ package ru.practicum.category.dto;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.experimental.UtilityClass;
 import ru.practicum.category.model.Category;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
