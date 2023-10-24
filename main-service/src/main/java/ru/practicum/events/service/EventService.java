@@ -177,7 +177,7 @@ public class EventService {
                 .collect(Collectors.toList());
 
         saveViewInEvent(result, rangeStart);
-        statsClient.saveStats(app, request.getRequestURI(), request.getRemoteAddr());
+        statsClient.saveStats(app, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now());
 
         if (sort.equals(VIEWS)) {
             return result.stream()
@@ -204,7 +204,7 @@ public class EventService {
         if (views != null) {
             fullDto.setViews(views.size());
         }
-        statsClient.saveStats(app, request.getRequestURI(), request.getRemoteAddr());
+        statsClient.saveStats(app, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now());
 
         log.info("Get event with  id = {}}", id);
         return fullDto;

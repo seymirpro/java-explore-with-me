@@ -1,43 +1,44 @@
 package ru.practicum.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.dto.stats.EndpointHitDto;
 import ru.practicum.ewm.dto.stats.ViewStatsDto;
 import ru.practicum.service.StatsServerService;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
+import static ru.practicum.ewm.dto.stats.Constants.DATE_TIME_PATTERN;
+
+
 @RestController
+@RequiredArgsConstructor
 @Slf4j
 public class StatsServerController {
-    private StatsServerService statsServerService;
 
-    @Autowired
-    public StatsServerController(StatsServerService statsServerService) {
-        this.statsServerService = statsServerService;
-    }
+    private final StatsServerService service;
 
     @PostMapping("/hit")
-    public ResponseEntity<Void> addHit(@RequestBody EndpointHitDto endpointHitDto) {
-        statsServerService.addHit(endpointHitDto);
-        return ResponseEntity.ok().build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public void saveStatsHit(@RequestBody @Valid EndpointHitDto endpointHitDto) {
+        log.info("Save StatsHit {}", endpointHitDto);
+        service.saveStat(endpointHitDto);
     }
 
     @GetMapping("/stats")
-    public List<ViewStatsDto> getStats(@RequestParam() @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
-                                       @RequestParam() @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
-                                       @RequestParam(required = false) List<String> uris,
-                                       @RequestParam(required = false) boolean unique
+    public Collection<ViewStatsDto> getViewStats(
+            @RequestParam(value = "start") @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime start,
+            @RequestParam(value = "end") @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime end,
+            @RequestParam(value = "uris", defaultValue = "") List<String> uris,
+            @RequestParam(value = "unique", defaultValue = "false") Boolean unique
     ) {
-        log.info("start {}", start);
-        log.info("end {}", end);
-        log.info("uris {}", uris);
-        log.info("unique {}", unique);
-        return statsServerService.getStats(start, end, uris, unique);
+        log.info("Get viewed stats with startDate {} endDate {}, uris {} unique {}", start, end, uris, unique);
+        return service.getStats(start, end, uris, unique);
     }
 }
