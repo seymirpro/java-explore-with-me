@@ -3,12 +3,11 @@ package ru.practicum.events.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.practicum.category.model.Category;
 import ru.practicum.locations.model.Location;
-import ru.practicum.util.enums.EventState;
 import ru.practicum.users.model.User;
+import ru.practicum.util.enums.EventState;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
