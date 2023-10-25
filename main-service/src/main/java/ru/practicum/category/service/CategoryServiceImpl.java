@@ -2,7 +2,6 @@ package ru.practicum.category.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +10,6 @@ import ru.practicum.category.dto.CategoryMapper;
 import ru.practicum.category.dto.NewCategoryDto;
 import ru.practicum.category.model.Category;
 import ru.practicum.category.repository.CategoryRepository;
-import ru.practicum.handler.NotAvailableException;
 import ru.practicum.handler.NotFoundException;
 import ru.practicum.util.Pagination;
 
@@ -68,11 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (!categoryRepository.existsById(id)) {
             throw new NotFoundException(String.format("Category with id=%d hasn't found", id));
         } else {
-            try {
-                categoryRepository.deleteById(id);
-            } catch (DataIntegrityViolationException e) {
-                throw new NotAvailableException("The category isn't empty");
-            }
+            categoryRepository.deleteById(id);
             log.info("Delete category with id = {}", id);
         }
     }
