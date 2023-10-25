@@ -21,7 +21,6 @@ import static ru.practicum.util.enums.EventState.PENDING;
 @Getter
 @Setter
 @ToString
-@DynamicUpdate
 public class Event {
 
     @Id
