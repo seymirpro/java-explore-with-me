@@ -2,13 +2,11 @@ package ru.practicum.comments.dto;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.experimental.UtilityClass;
 import ru.practicum.comments.model.Comment;
 import ru.practicum.events.model.Event;
 import ru.practicum.users.model.User;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@UtilityClass
 public class CommentMapper {
 
     public static CommentDto mapToComment(NewCommentDto newCommentDto) {
