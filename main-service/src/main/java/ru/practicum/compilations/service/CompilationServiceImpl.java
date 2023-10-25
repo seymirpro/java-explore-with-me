@@ -107,7 +107,10 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Transactional(readOnly = true)
     private Compilation getCompilation(Long id) {
-        return compilationRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Compilation with id=" + id + " hasn't found"));
+        if (compilationRepository.existsById(id)){
+            throw new NotFoundException(String.format("Compilation with id=%d hasn't found", id));
+        } else {
+            return compilationRepository.findById(id).get();
+        }
     }
 }
