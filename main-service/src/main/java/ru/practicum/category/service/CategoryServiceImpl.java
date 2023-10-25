@@ -25,7 +25,6 @@ import static ru.practicum.category.dto.CategoryMapper.toCategoryDto;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -37,6 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
         return toCategoryDto(category);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public CategoryDto getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
